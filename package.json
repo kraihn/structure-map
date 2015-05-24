@@ -1,6 +1,6 @@
 {
   "name": "structure-map",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Creates a JSON object representing a file system recursively mapped with computed hashes.",
   "main": "index.js",
   "bin": {
@@ -9,13 +9,19 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "files": [
+    "cli.js", "index.js"
+  ],
   "author": "Jared Dickson <code@jareddickson.com>",
   "license": "MIT",
   "dependencies": {
     "file": "^0.2.2",
     "meow": "^3.1.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-jshint": "^0.11.2"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/kraihn/structure-map.git"

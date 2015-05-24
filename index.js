@@ -7,40 +7,53 @@ var path = require('path');
 
 exports.map = function (directories, options) {
 
-    if (directories.length === 0) directories.push('.');
-    if (!options) options = {};
-    var algorithm = options.hashAlgorithm ? options.hashAlgorithm : 'sha1';
-    var map = {
-        files: []
-    };
+  if (directories.length === 0) {
+    directories.push('.');
+  }
+  if (!options) {
+    options = {};
+  }
 
+  var cwd = process.cwd();
+  var algorithm = options.hashAlgorithm ? options.hashAlgorithm : 'sha1';
+  var map = {
+    files: []
+  };
 
-    directories.forEach(function (directory) {
+  if (options.cwd) {
+    process.chdir(options.cwd);
+  }
 
-        file.walkSync(directory, function (directory) {
+  directories.forEach(function (directory) {
 
-            var files = fs.readdirSync(directory);
+    file.walkSync(directory, function (directory) {
 
-            files.forEach(function (file) {
-                var filepath = [directory, file].join('/');
-                var filestat = fs.statSync([directory, file].join('/'));
+      var files = fs.readdirSync(directory);
 
-                if (filestat.isFile(filepath)) {
-                    map.files.push({
-                        name: file,
-                        type: path.extname(filepath),
-                        directory: directory,
-                        filepath: filepath,
-                        size: filestat.size,
-                        blocks: filestat.blocks,
-                        hash: crypto.createHash(algorithm).update(fs.readFileSync(filepath)).digest('hex')
-                    });
-                }
-            });
-        });
+      files.forEach(function (file) {
+        var filepath = [directory, file].join('/');
+        var filestat = fs.statSync([directory, file].join('/'));
+
+        if (filestat.isFile(filepath)) {
+          map.files.push({
+            name: file,
+            type: path.extname(filepath),
+            directory: directory,
+            filepath: filepath,
+            size: filestat.size,
+            blocks: filestat.blocks,
+            hash: crypto.createHash(algorithm).update(fs.readFileSync(filepath)).digest('hex')
+          });
+        }
+      });
     });
+  });
 
-    map.hash = crypto.createHash(algorithm).update(map.files.toString()).digest('hex');
+  map.hash = crypto.createHash(algorithm).update(map.files.toString()).digest('hex');
 
-    return map;
+  if (options.cwd) {
+    process.chdir(cwd);
+  }
+
+  return map;
 };
