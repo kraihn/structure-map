@@ -1,6 +1,6 @@
 {
   "name": "structure-map",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Creates a JSON object representing a file system recursively mapped with computed hashes.",
   "main": "index.js",
   "bin": {

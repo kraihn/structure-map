@@ -49,7 +49,7 @@ exports.map = function (directories, options) {
     });
   });
 
-  map.hash = crypto.createHash(algorithm).update(map.files.toString()).digest('hex');
+  map.hash = crypto.createHash(algorithm).update(JSON.stringify(map.files)).digest('hex');
 
   if (options.cwd) {
     process.chdir(cwd);
